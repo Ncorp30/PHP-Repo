@@ -37,13 +37,16 @@ class Songs extends Controller
      */
     public function addSong()
     {
-        // if we have POST data to create a new song entry
         if (isset($_POST["submit_add_song"])) {
-            // do addSong() in model/model.php
-            $this->model->addSong($_POST["artist"], $_POST["track"],  $_POST["link"]);
+            $artist = filter_input(INPUT_POST, "artist", FILTER_SANITIZE_SPECIAL_CHARS);
+            $track = filter_input(INPUT_POST, "track", FILTER_SANITIZE_SPECIAL_CHARS);
+            $link = filter_input(INPUT_POST, "link", FILTER_SANITIZE_URL);
+
+            if ($artist !== null && $artist !== false && $track !== null && $track !== false && $link !== null && $link !== false) {
+                $this->model->addSong($artist, $track, $link);
+            }
         }
 
-        // where to go after song has been added
         header('location: ' . URL . 'songs/index');
     }
 
@@ -58,13 +61,12 @@ class Songs extends Controller
      */
     public function deleteSong($song_id)
     {
-        // if we have an id of a song that should be deleted
-        if (isset($song_id)) {
-            // do deleteSong() in model/model.php
+        $song_id = filter_var($song_id, FILTER_VALIDATE_INT);
+
+        if ($song_id !== false && $song_id !== null) {
             $this->model->deleteSong($song_id);
         }
 
-        // where to go after song has been deleted
         header('location: ' . URL . 'songs/index');
     }
 
@@ -75,9 +77,9 @@ class Songs extends Controller
      */
     public function editSong($song_id)
     {
-        // if we have an id of a song that should be edited
-        if (isset($song_id)) {
-            // do getSong() in model/model.php
+        $song_id = filter_var($song_id, FILTER_VALIDATE_INT);
+
+        if ($song_id !== false && $song_id !== null) {
             $song = $this->model->getSong($song_id);
 
             // in a real application we would also check if this db entry exists and therefore show the result or
@@ -88,7 +90,6 @@ class Songs extends Controller
             require APP . 'view/songs/edit.php';
             require APP . 'view/_templates/footer.php';
         } else {
-            // redirect user to songs index page (as we don't have a song_id)
             header('location: ' . URL . 'songs/index');
         }
     }
@@ -103,13 +104,17 @@ class Songs extends Controller
      */
     public function updateSong()
     {
-        // if we have POST data to create a new song entry
         if (isset($_POST["submit_update_song"])) {
-            // do updateSong() from model/model.php
-            $this->model->updateSong($_POST["artist"], $_POST["track"],  $_POST["link"], $_POST['song_id']);
+            $artist = filter_input(INPUT_POST, "artist", FILTER_SANITIZE_SPECIAL_CHARS);
+            $track = filter_input(INPUT_POST, "track", FILTER_SANITIZE_SPECIAL_CHARS);
+            $link = filter_input(INPUT_POST, "link", FILTER_SANITIZE_URL);
+            $song_id = filter_input(INPUT_POST, "song_id", FILTER_VALIDATE_INT);
+
+            if ($artist !== null && $artist !== false && $track !== null && $track !== false && $link !== null && $link !== false && $song_id !== false && $song_id !== null) {
+                $this->model->updateSong($artist, $track, $link, $song_id);
+            }
         }
 
-        // where to go after song has been added
         header('location: ' . URL . 'songs/index');
     }
 
