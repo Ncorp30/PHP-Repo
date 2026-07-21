@@ -17,8 +17,6 @@ class Controller
      */
     function __construct()
     {
-        $this->openDatabaseConnection();
-        $this->loadModel();
     }
 
     /**
@@ -43,6 +41,10 @@ class Controller
      */
     public function loadModel()
     {
+        if ($this->db === null) {
+            $this->openDatabaseConnection();
+        }
+
         require APP . 'model/model.php';
         // create new "model" (and pass the database connection)
         $this->model = new Model($this->db);
