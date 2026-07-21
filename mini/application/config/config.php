@@ -12,7 +12,7 @@
  */
 define('ENVIRONMENT', 'development');
 
-if (ENVIRONMENT == 'development' || ENVIRONMENT == 'dev') {
+if (in_array(ENVIRONMENT, array('development', 'dev'), true)) {
     error_reporting(E_ALL);
     ini_set("display_errors", 1);
 }
