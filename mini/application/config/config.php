@@ -10,7 +10,7 @@
  * Configuration for: Error reporting
  * Useful to show every little problem during development, but only show hard errors in production
  */
-define('ENVIRONMENT', 'development');
+define('ENVIRONMENT', getenv('ENVIRONMENT') ?: (isset($_SERVER['ENVIRONMENT']) ? $_SERVER['ENVIRONMENT'] : 'development'));
 
 if (ENVIRONMENT == 'development' || ENVIRONMENT == 'dev') {
     error_reporting(E_ALL);
