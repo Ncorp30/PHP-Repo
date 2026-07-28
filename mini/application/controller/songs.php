@@ -22,9 +22,10 @@ class Songs extends Controller
         $amount_of_songs = $this->model->getAmountOfSongs();
 
        // load views. within the views we can echo out $songs and $amount_of_songs easily
-        require APP . 'view/_templates/header.php';
-        require APP . 'view/songs/index.php';
-        require APP . 'view/_templates/footer.php';
+        $this->render('songs/index', array(
+            'songs' => $songs,
+            'amount_of_songs' => $amount_of_songs
+        ));
     }
 
     /**
@@ -84,9 +85,9 @@ class Songs extends Controller
             // redirect the user to an error page or similar
 
             // load views. within the views we can echo out $song easily
-            require APP . 'view/_templates/header.php';
-            require APP . 'view/songs/edit.php';
-            require APP . 'view/_templates/footer.php';
+            $this->render('songs/edit', array(
+                'song' => $song
+            ));
         } else {
             // redirect user to songs index page (as we don't have a song_id)
             header('location: ' . URL . 'songs/index');
