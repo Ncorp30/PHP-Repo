@@ -10,11 +10,14 @@
  * Configuration for: Error reporting
  * Useful to show every little problem during development, but only show hard errors in production
  */
-define('ENVIRONMENT', 'development');
+define('ENVIRONMENT', getenv('APP_ENV') ?: 'production');
 
 if (ENVIRONMENT == 'development' || ENVIRONMENT == 'dev') {
     error_reporting(E_ALL);
     ini_set("display_errors", 1);
+} else {
+    error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT);
+    ini_set("display_errors", 0);
 }
 
 /**
